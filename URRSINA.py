@@ -19,6 +19,26 @@ class Caja3D(Button):
             highlight_color=color.lime )
 jugador=FirstPersonController()
 
+
+class mano(Entity):
+    xInicio=0 # Posición del arma en el eje X
+    yInicio=-0.4 # Posición del arma en el eje Y
+    image_speed=0.4
+    image_index=0 # Imagen fija
+    textura_mano=sprite_index="arma.webp"
+    def __init__(self):
+        super().__init__(
+            parent=camera.ui,
+            model='cube',
+            texture=self.textura_mano,
+            scale=0.4,
+            color=color.white,
+            rotation=Vec3(0,0,0), # girar el arma
+            position=Vec2(self.xInicio,self.yInicio)
+        )
+
+
+
 ini_techos = [
     [0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -78,5 +98,6 @@ def crear_niveles(nivel1, nivel2):
             if techo[x] > 0:
                 cajax= Caja3D(position=(x,techo[x],z),escala= (1,1))
 crear_niveles(ini_nivel, ini_techos)
+
 
 app.run()
