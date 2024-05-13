@@ -17,7 +17,7 @@ class Caja3D(Button):
             color=color.color(0,0,random.uniform(0.9,1)),
             scale=escala,
             highlight_color=color.lime )
-jugador=FirstPersonController()
+jugador=FirstPersonController(position=(0,1,0))
 
 
 class mano(Entity):
@@ -25,7 +25,7 @@ class mano(Entity):
     yInicio=-0.4 # Posición del arma en el eje Y
     image_speed=0.4
     image_index=0 # Imagen fija
-    textura_mano=sprite_index="arma.webp"
+    textura_mano=load_texture="we.png"
     def __init__(self):
         super().__init__(
             parent=camera.ui,
@@ -36,68 +36,47 @@ class mano(Entity):
             rotation=Vec3(0,0,0), # girar el arma
             position=Vec2(self.xInicio,self.yInicio)
         )
+arma= mano()
 
+ground = Entity(model='plane', collider='box', scale=64, texture='lava2.jpg', texture_scale=(4,4))
 
+# Creamos las paredes alrededor del suelo
+wall_texture = load_texture('pared.jpg')  # Reemplaza 'wall_texture.png' con la ruta a tu textura de paredes
 
-ini_techos = [
-    [0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 8, 8, 8],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 8, 8, 8],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 8, 8, 8],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 0, 0]
-]
+# Paredes alrededor del suelo
+pared1 = Entity(model='cube', texture=wall_texture, scale=(ground.scale.x, 50, 1), position=(0, 0.5, ground.scale.z / 2))
+pared1.collider = 'box'
+pared2 = Entity(model='cube', texture=wall_texture, scale=(ground.scale.x, 50, 1), position=(0, 0.5, -ground.scale.z / 2))
+pared2.collider = 'box'
+pared3 = Entity(model='cube', texture=wall_texture, scale=(1, 50, ground.scale.z), position=(ground.scale.x / 2, 0.5, 0))
+pared3.collider = 'box'
+pared4 = Entity(model='cube', texture=wall_texture, scale=(1, 50, ground.scale.z), position=(-ground.scale.x / 2, 0.5, 0))
+pared4.collider = 'box'
 
-ini_nivel = [
-    [0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 0, 0]
-]
+# Creamos las salas en las esquinas del plano
+sala_texture = load_texture('sala.jpg')  # Reemplaza 'sala_texture.jpg' con la ruta a tu textura de sala
 
-def crear_niveles(nivel1, nivel2):
-    largoHabitacion=len(nivel1)
-    anchoHabitacion=len(nivel1[0])
-    xInicio=anchoHabitacion/2
-    # Crear un espacio, como una sala
-    for z in range(largoHabitacion):
-        piso = nivel1[z]
-        techo = nivel1[z]
-        # crear el suelo
-        cajax= Caja3D(position=(xInicio,0,z),escala= (anchoHabitacion,1))
-        # crear los bloques con su altura
-        for x in range (anchoHabitacion):
-            # crecimiento del suelo
-            if piso[x] >0:
-                cajax= Caja3D(position=(x,piso[x],z),escala= (1, piso[x]))
-            # valida si hay techo
-            if techo[x] > 0:
-                cajax= Caja3D(position=(x,techo[x],z),escala= (1,1))
-crear_niveles(ini_nivel, ini_techos)
+# Creamos las salas en las esquinas del plano
+sala_texture = load_texture('sala.jpg')  # Reemplaza 'sala_texture.jpg' con la ruta a tu textura de sala
+door_texture = load_texture('door_texture.jpg')  # Reemplaza 'door_texture.jpg' con la ruta a tu textura de puerta
+
+# Creamos las salas
+sala1 = Entity(model='cube', texture=sala_texture, scale=(30, 10, 30), position=(ground.scale.x / 2 - 15, 5, ground.scale.z / 2 - 15))
+puerta1 = Entity(model='cube', texture=door_texture, scale=(1, 10, 5), position=(ground.scale.x / 2 - 15, 5, ground.scale.z / 2))
+puerta2 = Entity(model='cube', texture=door_texture, scale=(1, 10, 5), position=(ground.scale.x / 2, 5, ground.scale.z / 2 - 15))
+
+sala2 = Entity(model='cube', texture=sala_texture, scale=(30, 10, 30), position=(ground.scale.x / 2 - 15, 5, -ground.scale.z / 2 + 15))
+puerta3 = Entity(model='cube', texture=door_texture, scale=(1, 10, 5), position=(ground.scale.x / 2 - 15, 5, -ground.scale.z / 2))
+puerta4 = Entity(model='cube', texture=door_texture, scale=(1, 10, 5), position=(ground.scale.x / 2, 5, -ground.scale.z / 2 + 15))
+
+sala3 = Entity(model='cube', texture=sala_texture, scale=(30, 10, 30), position=(-ground.scale.x / 2 + 15, 5, ground.scale.z / 2 - 15))
+puerta5 = Entity(model='cube', texture=door_texture, scale=(1, 10, 5), position=(-ground.scale.x / 2, 5, ground.scale.z / 2 - 15))
+puerta6 = Entity(model='cube', texture=door_texture, scale=(1, 10, 5), position=(-ground.scale.x / 2 + 15, 5, ground.scale.z / 2))
+
+sala4 = Entity(model='cube', texture=sala_texture, scale=(30, 10, 30), position=(-ground.scale.x / 2 + 15, 5, -ground.scale.z / 2 + 15))
+puerta7 = Entity(model='cube', texture=door_texture, scale=(1, 10, 5), position=(-ground.scale.x / 2, 5, -ground.scale.z / 2 + 15))
+puerta8 = Entity(model='cube', texture=door_texture, scale=(1, 10, 5), position=(-ground.scale.x / 2 + 15, 5, -ground.scale.z / 2))
+
 
 
 app.run()
